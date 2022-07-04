@@ -1,31 +1,29 @@
 // @mui material components
 import Grid from "@mui/material/Grid";
-import Icon from "@mui/material/Icon";
+// import Icon from "@mui/material/Icon";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import SuiTypography from "components/SuiTypography";
+// import SuiTypography from "components/SuiTypography";
 
 // Soft UI Dashboard React examples
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import MiniStatisticsCard from "examples/Cards/StatisticsCards/MiniStatisticsCard";
-import ReportsBarChart from "examples/Charts/BarCharts/ReportsBarChart";
-import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
+// import GradientLineChart from "examples/Charts/LineCharts/GradientLineChart";
 
-// Soft UI Dashboard React base styles
-import typography from "assets/theme/base/typography";
+// // Soft UI Dashboard React base styles
+// import typography from "assets/theme/base/typography";
 
 import Projects from "layouts/dashboard/components/Projects";
-import OrderOverview from "layouts/dashboard/components/OrderOverview";
-
-// Data
-import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
-import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import AccountTreeIcon from "@mui/icons-material/AccountTree";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+// import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData";
 
 function Dashboard() {
-  const { size } = typography;
-  const { chart, items } = reportsBarChartData;
+  // const { size } = typography;
 
   return (
     <DashboardLayout>
@@ -35,57 +33,48 @@ function Dashboard() {
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's money" }}
-                count="$53,000"
+                title={{ text: "Time spent today" }}
+                count="1 hour"
                 percentage={{ color: "success", text: "+55%" }}
-                icon={{ color: "info", component: "paid" }}
+                icon={{ color: "dark", component: <AccessTimeIcon /> }}
               />
             </Grid>
+
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's users" }}
-                count="2,300"
+                title={{ text: "Today's projects" }}
+                count="3"
                 percentage={{ color: "success", text: "+3%" }}
-                icon={{ color: "info", component: "public" }}
+                icon={{ color: "dark", component: <AccountTreeIcon /> }}
               />
             </Grid>
+
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "new clients" }}
-                count="+3,462"
-                percentage={{ color: "error", text: "-2%" }}
-                icon={{ color: "info", component: "emoji_events" }}
+                title={{ text: "Time spent overall" }}
+                count="10 hours"
+                icon={{ color: "dark", component: <AccessTimeFilledIcon /> }}
               />
             </Grid>
+
             <Grid item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "sales" }}
-                count="$103,430"
-                percentage={{ color: "success", text: "+5%" }}
-                icon={{
-                  color: "info",
-                  component: "shopping_cart",
-                }}
+                title={{ text: "Total projects" }}
+                count="2,300"
+                icon={{ color: "dark", component: <SummarizeIcon /> }}
               />
             </Grid>
           </Grid>
         </SuiBox>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={12}>
+            <Projects />
+          </Grid>
+        </Grid>
 
-        <SuiBox mb={3}>
+        {/* <SuiBox mb={3} sx={{ mt: 2 }}>
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={5}>
-              <ReportsBarChart
-                title="active users"
-                description={
-                  <>
-                    (<strong>+23%</strong>) than last week
-                  </>
-                }
-                chart={chart}
-                items={items}
-              />
-            </Grid>
-            <Grid item xs={12} lg={7}>
+            <Grid item xs={12} lg={12}>
               <GradientLineChart
                 title="Sales Overview"
                 description={
@@ -106,15 +95,7 @@ function Dashboard() {
               />
             </Grid>
           </Grid>
-        </SuiBox>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
-            <Projects />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <OrderOverview />
-          </Grid>
-        </Grid>
+        </SuiBox> */}
       </SuiBox>
     </DashboardLayout>
   );
