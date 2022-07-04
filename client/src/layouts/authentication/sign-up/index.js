@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Checkbox from "@mui/material/Checkbox";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
@@ -20,11 +19,33 @@ import Separator from "layouts/authentication/components/Separator";
 
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
+import { toast } from "react-toast";
+import api from "utils/api";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function SignUp() {
-  const [agreement, setAgremment] = useState(true);
+  const [state, setState] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  const handleSetAgremment = () => setAgremment(!agreement);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (event) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    await api.createNewUser(state);
+    toast.success("Form submitted");
+    setLoading(false);
+  };
 
   return (
     <BasicLayout title="Welcome!" description="" image={curved6}>
@@ -41,37 +62,42 @@ function SignUp() {
         <SuiBox pt={2} pb={3} px={3}>
           <SuiBox component="form" role="form">
             <SuiBox mb={2}>
-              <SuiInput placeholder="Name" />
+              <SuiInput
+                placeholder="Name"
+                name="name"
+                value={state.name}
+                onChange={handleChange}
+                required
+              />
             </SuiBox>
             <SuiBox mb={2}>
-              <SuiInput type="email" placeholder="Email" />
+              <SuiInput
+                type="email"
+                placeholder="Email"
+                name="email"
+                onChange={handleChange}
+                required
+              />
             </SuiBox>
             <SuiBox mb={2}>
-              <SuiInput type="password" placeholder="Password" />
+              <SuiInput
+                type="password"
+                placeholder="Password"
+                name="password"
+                onChange={handleChange}
+                required
+              />
             </SuiBox>
-            <SuiBox display="flex" alignItems="center">
-              <Checkbox checked={agreement} onChange={handleSetAgremment} />
-              <SuiTypography
-                variant="button"
-                fontWeight="regular"
-                onClick={handleSetAgremment}
-                sx={{ cursor: "poiner", userSelect: "none" }}
-              >
-                &nbsp;&nbsp;I agree the&nbsp;
-              </SuiTypography>
-              <SuiTypography
-                component="a"
-                href="#"
-                variant="button"
-                fontWeight="bold"
-                textGradient
-              >
-                Terms and Conditions
-              </SuiTypography>
-            </SuiBox>
+
             <SuiBox mt={4} mb={1}>
-              <SuiButton variant="gradient" color="dark" fullWidth>
-                sign up
+              <SuiButton
+                variant="gradient"
+                color="dark"
+                fullWidth
+                onClick={handleSubmit}
+                disabled={!state.name || !state.email || !state.password || loading}
+              >
+                {loading ? <CircularProgress color="success" size={20} /> : "sign up"}
               </SuiButton>
             </SuiBox>
             <SuiBox mt={3} textAlign="center">

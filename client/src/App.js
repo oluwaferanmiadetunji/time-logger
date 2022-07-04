@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ToastContainer } from "react-toast";
 
 // react-router components
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -62,14 +63,7 @@ export default function App() {
       }
 
       if (route.route) {
-        return (
-          <Route
-            exact
-            path={route.route}
-            element={route.component}
-            key={route.key}
-          />
-        );
+        return <Route exact path={route.route} element={route.component} key={route.key} />;
       }
 
       return null;
@@ -78,11 +72,13 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ToastContainer position="top-right" delay={2000} />
+
       {layout === "dashboard" && (
         <Sidenav
           color={sidenavColor}
           brand={brand}
-          brandName="Soft UI Dashboard"
+          brandName="Dashboard"
           routes={routes}
           onMouseEnter={handleOnMouseEnter}
           onMouseLeave={handleOnMouseLeave}

@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v3.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { forwardRef } from "react";
 
 // prop-types is a library for typechecking of props
@@ -27,46 +12,74 @@ import SuiInputIconRoot from "components/SuiInput/SuiInputIconRoot";
 // Soft UI Dashboard React contexts
 import { useSoftUIController } from "context";
 
-const SuiInput = forwardRef(({ size, icon, error, success, disabled, ...rest }, ref) => {
-  let template;
-  const [controller] = useSoftUIController();
-  const { direction } = controller;
-  const iconDirection = icon.direction;
+const SuiInput = forwardRef(
+  ({ size, icon, error, success, disabled, ...rest }, ref) => {
+    let template;
+    const [controller] = useSoftUIController();
+    const { direction } = controller;
+    const iconDirection = icon.direction;
 
-  if (icon.component && icon.direction === "left") {
-    template = (
-      <SuiInputWithIconRoot ref={ref} ownerState={{ error, success, disabled }}>
-        <SuiInputIconBoxRoot ownerState={{ size }}>
-          <SuiInputIconRoot fontSize="small" ownerState={{ size }}>
-            {icon.component}
-          </SuiInputIconRoot>
-        </SuiInputIconBoxRoot>
+    if (icon.component && icon.direction === "left") {
+      template = (
+        <SuiInputWithIconRoot
+          ref={ref}
+          ownerState={{ error, success, disabled }}
+        >
+          <SuiInputIconBoxRoot ownerState={{ size }}>
+            <SuiInputIconRoot fontSize="small" ownerState={{ size }}>
+              {icon.component}
+            </SuiInputIconRoot>
+          </SuiInputIconBoxRoot>
+          <SuiInputRoot
+            {...rest}
+            ownerState={{
+              size,
+              error,
+              success,
+              iconDirection,
+              direction,
+              disabled,
+            }}
+          />
+        </SuiInputWithIconRoot>
+      );
+    } else if (icon.component && icon.direction === "right") {
+      template = (
+        <SuiInputWithIconRoot
+          ref={ref}
+          ownerState={{ error, success, disabled }}
+        >
+          <SuiInputRoot
+            {...rest}
+            ownerState={{
+              size,
+              error,
+              success,
+              iconDirection,
+              direction,
+              disabled,
+            }}
+          />
+          <SuiInputIconBoxRoot ownerState={{ size }}>
+            <SuiInputIconRoot fontSize="small" ownerState={{ size }}>
+              {icon.component}
+            </SuiInputIconRoot>
+          </SuiInputIconBoxRoot>
+        </SuiInputWithIconRoot>
+      );
+    } else {
+      template = (
         <SuiInputRoot
           {...rest}
-          ownerState={{ size, error, success, iconDirection, direction, disabled }}
+          ref={ref}
+          ownerState={{ size, error, success, disabled }}
         />
-      </SuiInputWithIconRoot>
-    );
-  } else if (icon.component && icon.direction === "right") {
-    template = (
-      <SuiInputWithIconRoot ref={ref} ownerState={{ error, success, disabled }}>
-        <SuiInputRoot
-          {...rest}
-          ownerState={{ size, error, success, iconDirection, direction, disabled }}
-        />
-        <SuiInputIconBoxRoot ownerState={{ size }}>
-          <SuiInputIconRoot fontSize="small" ownerState={{ size }}>
-            {icon.component}
-          </SuiInputIconRoot>
-        </SuiInputIconBoxRoot>
-      </SuiInputWithIconRoot>
-    );
-  } else {
-    template = <SuiInputRoot {...rest} ref={ref} ownerState={{ size, error, success, disabled }} />;
+      );
+    }
+
+    return template;
   }
-
-  return template;
-});
+);
 
 // Setting default values for the props of SuiInput
 SuiInput.defaultProps = {
