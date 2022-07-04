@@ -19,9 +19,10 @@ import Separator from "layouts/authentication/components/Separator";
 
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
-import { toast } from "react-toast";
+
 import api from "utils/api";
 import CircularProgress from "@mui/material/CircularProgress";
+import constants from "utils/constant";
 
 function SignUp() {
   const [state, setState] = useState({
@@ -43,7 +44,7 @@ function SignUp() {
     event.preventDefault();
     setLoading(true);
     await api.createNewUser(state);
-    toast.success("Form submitted");
+
     setLoading(false);
   };
 
@@ -105,7 +106,7 @@ function SignUp() {
                 Already have an account?&nbsp;
                 <SuiTypography
                   component={Link}
-                  to="/authentication/sign-in"
+                  to={constants.ROUTES.SIGNIN}
                   variant="button"
                   color="dark"
                   fontWeight="bold"

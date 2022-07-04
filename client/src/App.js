@@ -22,6 +22,7 @@ import { useSoftUIController, setMiniSidenav } from "context";
 
 // Images
 import brand from "assets/images/logo-ct.png";
+import constants from "utils/constant";
 
 export default function App() {
   const [controller, dispatch] = useSoftUIController();
@@ -72,7 +73,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <ToastContainer position="top-right" delay={2000} />
+      <ToastContainer position="bottom-left" delay={2000} />
 
       {layout === "dashboard" && (
         <Sidenav
@@ -87,7 +88,7 @@ export default function App() {
 
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to={constants.ROUTES.dashboard} />} />
       </Routes>
     </ThemeProvider>
   );

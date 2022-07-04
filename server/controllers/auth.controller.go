@@ -54,7 +54,7 @@ func (ac *AuthController) SignInUser(ctx *gin.Context) {
 	user, err := ac.userService.FindUserByEmail(credentials.Email)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
-			ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid email or password"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid credentials"})
 			return
 		}
 		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": err.Error()})
@@ -62,7 +62,7 @@ func (ac *AuthController) SignInUser(ctx *gin.Context) {
 	}
 
 	if err := utils.VerifyPassword(user.Password, credentials.Password); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid email or Password"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"status": "fail", "message": "Invalid credentials"})
 		return
 	}
 

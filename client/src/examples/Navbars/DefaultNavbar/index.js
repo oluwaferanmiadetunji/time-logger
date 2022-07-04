@@ -22,8 +22,7 @@ function DefaultNavbar({ transparent, light }) {
   const [mobileNavbar, setMobileNavbar] = useState(false);
   const [mobileView, setMobileView] = useState(false);
 
-  const openMobileNavbar = ({ currentTarget }) =>
-    setMobileNavbar(currentTarget.parentNode);
+  const openMobileNavbar = ({ currentTarget }) => setMobileNavbar(currentTarget.parentNode);
   const closeMobileNavbar = () => setMobileNavbar(false);
 
   useEffect(() => {
@@ -72,27 +71,13 @@ function DefaultNavbar({ transparent, light }) {
         position="absolute"
         left={0}
         zIndex={3}
-        sx={({
-          palette: { transparent: transparentColor, white },
-          functions: { rgba },
-        }) => ({
-          backgroundColor: transparent
-            ? transparentColor.main
-            : rgba(white.main, 0.8),
+        sx={({ palette: { transparent: transparentColor, white }, functions: { rgba } }) => ({
+          backgroundColor: transparent ? transparentColor.main : rgba(white.main, 0.8),
           backdropFilter: transparent ? "none" : `saturate(200%) blur(30px)`,
         })}
       >
-        <SuiBox
-          component={Link}
-          to="/"
-          py={transparent ? 1.5 : 0.75}
-          lineHeight={1}
-        >
-          <SuiTypography
-            variant="button"
-            fontWeight="bold"
-            color={light ? "white" : "dark"}
-          >
+        <SuiBox component={Link} to="/" py={transparent ? 1.5 : 0.75} lineHeight={1}>
+          <SuiTypography variant="button" fontWeight="bold" color={light ? "white" : "dark"}>
             Home
           </SuiTypography>
         </SuiBox>
@@ -109,9 +94,7 @@ function DefaultNavbar({ transparent, light }) {
           <Icon fontSize="default">{mobileNavbar ? "close" : "menu"}</Icon>
         </SuiBox>
       </SuiBox>
-      {mobileView && (
-        <DefaultNavbarMobile open={mobileNavbar} close={closeMobileNavbar} />
-      )}
+      {mobileView && <DefaultNavbarMobile open={mobileNavbar} close={closeMobileNavbar} />}
     </Container>
   );
 }

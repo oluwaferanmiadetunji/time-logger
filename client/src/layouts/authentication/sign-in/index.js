@@ -1,3 +1,4 @@
+import { useState } from "react";
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -12,8 +13,33 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import curved6 from "assets/images/curved-images/curved14.jpg";
+import api from "utils/api";
+import CircularProgress from "@mui/material/CircularProgress";
+import constants from "utils/constant";
 
 function SignIn() {
+  const [state, setState] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (event) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    await api.signin(state);
+
+    setLoading(false);
+  };
+
   return (
     <CoverLayout
       title="Welcome back"
@@ -24,32 +50,42 @@ function SignIn() {
       <SuiBox component="form" role="form">
         <SuiBox mb={2}>
           <SuiBox mb={1} ml={0.5}>
-            <SuiTypography
-              component="label"
-              variant="caption"
-              fontWeight="bold"
-            >
+            <SuiTypography component="label" variant="caption" fontWeight="bold">
               Email
             </SuiTypography>
           </SuiBox>
-          <SuiInput type="email" placeholder="Email" />
+          <SuiInput
+            type="email"
+            placeholder="Email"
+            name="email"
+            onChange={handleChange}
+            required
+          />
         </SuiBox>
         <SuiBox mb={2}>
           <SuiBox mb={1} ml={0.5}>
-            <SuiTypography
-              component="label"
-              variant="caption"
-              fontWeight="bold"
-            >
+            <SuiTypography component="label" variant="caption" fontWeight="bold">
               Password
             </SuiTypography>
           </SuiBox>
-          <SuiInput type="password" placeholder="Password" />
+          <SuiInput
+            type="password"
+            placeholder="Password"
+            name="password"
+            onChange={handleChange}
+            required
+          />
         </SuiBox>
 
         <SuiBox mt={4} mb={1}>
-          <SuiButton variant="gradient" color="dark" fullWidth>
-            sign in
+          <SuiButton
+            variant="gradient"
+            color="dark"
+            fullWidth
+            onClick={handleSubmit}
+            disabled={!state.email || !state.password || loading}
+          >
+            {loading ? <CircularProgress color="success" size={20} /> : "sign in"}
           </SuiButton>
         </SuiBox>
         <SuiBox mt={3} textAlign="center">
@@ -57,7 +93,7 @@ function SignIn() {
             Don&apos;t have an account?{" "}
             <SuiTypography
               component={Link}
-              to="/authentication/sign-up"
+              to={constants.ROUTES.SIGNUP}
               variant="button"
               color="dark"
               fontWeight="medium"

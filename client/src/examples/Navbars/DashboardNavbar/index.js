@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Soft UI Dashboard React - v3.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // react-router components
@@ -27,14 +12,15 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import Icon from "@mui/material/Icon";
+import PersonIcon from "@mui/icons-material/Person";
 
 // Soft UI Dashboard React components
 import SuiBox from "components/SuiBox";
-import SuiInput from "components/SuiInput";
 
 // Soft UI Dashboard React examples
 import Breadcrumbs from "examples/Breadcrumbs";
 import NotificationItem from "examples/Items/NotificationItem";
+import ProfileItem from "examples/Items/ProfileItem";
 
 // Custom styles for DashboardNavbar
 import {
@@ -46,20 +32,18 @@ import {
 } from "examples/Navbars/DashboardNavbar/styles";
 
 // Soft UI Dashboard React context
-import {
-  useSoftUIController,
-  setTransparentNavbar,
-  setMiniSidenav,
-} from "context";
+import { useSoftUIController, setTransparentNavbar, setMiniSidenav } from "context";
 
 // Images
 import team2 from "assets/images/team-2.jpg";
+import api from "utils/api";
 
 function DashboardNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, transparentNavbar, fixedNavbar } = controller;
   const [openMenu, setOpenMenu] = useState(false);
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
 
   useEffect(() => {
@@ -72,10 +56,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
     // A function that sets the transparent state of the navbar.
     function handleTransparentNavbar() {
-      setTransparentNavbar(
-        dispatch,
-        (fixedNavbar && window.scrollY === 0) || !fixedNavbar
-      );
+      setTransparentNavbar(dispatch, (fixedNavbar && window.scrollY === 0) || !fixedNavbar);
     }
 
     /** 
@@ -95,6 +76,8 @@ function DashboardNavbar({ absolute, light, isMini }) {
 
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const handleOpenProfileMenu = (event) => setOpenProfileMenu(event.currentTarget);
+  const handleCloseProfileMenu = () => setOpenProfileMenu(false);
 
   // Render the notifications menu
   const renderMenu = () => (
@@ -118,6 +101,28 @@ function DashboardNavbar({ absolute, light, isMini }) {
     </Menu>
   );
 
+  const renderProfileMenu = () => (
+    <Menu
+      anchorEl={openProfileMenu}
+      anchorReference={null}
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "left",
+      }}
+      open={Boolean(openProfileMenu)}
+      onClose={handleCloseProfileMenu}
+      sx={{ mt: 2 }}
+    >
+      <ProfileItem
+        title="Logout"
+        onClick={async () => {
+          await api.logout();
+          handleCloseProfileMenu();
+        }}
+      />
+    </Menu>
+  );
+
   return (
     <AppBar
       position={absolute ? "absolute" : navbarType}
@@ -125,21 +130,11 @@ function DashboardNavbar({ absolute, light, isMini }) {
       sx={(theme) => navbar(theme, { transparentNavbar, absolute, light })}
     >
       <Toolbar sx={(theme) => navbarContainer(theme)}>
-        <SuiBox
-          color="inherit"
-          mb={{ xs: 1, md: 0 }}
-          sx={(theme) => navbarRow(theme, { isMini })}
-        >
+        <SuiBox color="inherit" mb={{ xs: 1, md: 0 }} sx={(theme) => navbarRow(theme, { isMini })}>
           <Breadcrumbs title={route[route.length - 1]} light={light} />
         </SuiBox>
         {isMini ? null : (
           <SuiBox sx={(theme) => navbarRow(theme, { isMini })}>
-            <SuiBox pr={1}>
-              <SuiInput
-                placeholder="Type here..."
-                icon={{ component: "search", direction: "left" }}
-              />
-            </SuiBox>
             <SuiBox color={light ? "white" : "inherit"}>
               <IconButton
                 size="small"
@@ -161,11 +156,22 @@ function DashboardNavbar({ absolute, light, isMini }) {
                 variant="contained"
                 onClick={handleOpenMenu}
               >
-                <Icon className={light ? "text-white" : "text-dark"}>
-                  notifications
-                </Icon>
+                <Icon className={light ? "text-white" : "text-dark"}>notifications</Icon>
+              </IconButton>
+
+              <IconButton
+                size="small"
+                color="inherit"
+                sx={navbarIconButton}
+                aria-controls="profile-menu"
+                aria-haspopup="true"
+                variant="contained"
+                onClick={handleOpenProfileMenu}
+              >
+                <PersonIcon />
               </IconButton>
               {renderMenu()}
+              {renderProfileMenu()}
             </SuiBox>
           </SuiBox>
         )}
